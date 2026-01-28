@@ -1,27 +1,25 @@
-# محیط مجازی (بسیار مهم)
+
 SocialEnv/
 venv/
 .venv/
 
-# فایل‌های کش پایتون
 __pycache__/
 *.py[cod]
 *$py.class
 
-# دیتابیس محلی (چون فعلاً از SQLite استفاده می‌کنی)
+
 *.sqlite3
 *.db
 
-# فایل تنظیمات حساس (پسوردها و کلیدهای امنیتی)
 .env
 app/static/uploads/*
 !app/static/uploads/.gitkeep
 
-# تنظیمات ادیتورها
+
 .vscode/
 .idea/
 *.swp
 
-# فایل‌های سیستم عامل
+
 .DS_Store
 Thumbs.db
