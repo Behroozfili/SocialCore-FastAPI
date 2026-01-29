@@ -3,7 +3,7 @@ from schemas import PostBase
 from sqlalchemy.orm import Session
 
 
-def create_post(request: PostBase, db: Session):
+def create_post(db: Session, request: PostBase):
     
     new_post = Post(
         image_url=request.image_url,
@@ -16,3 +16,7 @@ def create_post(request: PostBase, db: Session):
     db.commit()
     db.refresh(new_post)
     return new_post
+
+def get_all_posts(db: Session):
+    posts = db.query(Post).all()
+    return posts

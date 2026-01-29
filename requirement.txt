@@ -3,4 +3,4 @@ uvicorn
 sqlalchemy
 pydantic
 bcrypt
-
+python-multipart
