@@ -5,10 +5,11 @@ import shutil
 from typing import List
 from fastapi import APIRouter, Depends, File, UploadFile, HTTPException, status
 from sqlalchemy.orm import Session
-
 from db.database import get_db
 from db import db_post
-from schemas import PostBase, PostDisplay
+from schemas import PostBase, PostDisplay,UserAuth
+from auth.oath2 import get_current_user
+from db import models
 
 
 router = APIRouter(prefix="/post", tags=["posts"])
@@ -17,7 +18,9 @@ image_url_types = ["url", "upload"]
 
 
 @router.post("/create_post", response_model=PostDisplay)
-def create_post(request: PostBase, db: Session = Depends(get_db)):
+def create_post(request: PostBase,
+ db: Session = Depends(get_db),
+ current_user:UserAuth=Depends(get_current_user)):
     if request.image_url_type not in image_url_types:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -48,3 +51,12 @@ def upload_file(file: UploadFile = File(...)):
     
     return {"filename": filename,
             "path_file": path_file}
+
+@router.delete("/delete_post/{id}")
+def delete_post(id:int,db:Session=Depends(get_db),current_user:UserAuth=Depends(get_current_user)):
+    post = db.query(models.Post).filter(models.Post.id == id).first()
+    if not post:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Post not found")
+    db.delete(post)
+    db.commit()
+    return {"message":"Post deleted successfully"}

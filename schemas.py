@@ -44,3 +44,11 @@ class PostDisplay(BaseModel):
     class Config:
         from_attributes = True
 
+class UserAuth(BaseModel):
+    usr_id: int
+    username: str
+    email: str
+    class Config:
+        from_attributes = True
+    
+
